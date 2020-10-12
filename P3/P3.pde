@@ -32,7 +32,7 @@ float
   t=0, 
   s=0;
 int
-  f=0, maxf=2*30, level=1, method=4;
+  f=0, maxf=2*30, level=3, method=4;
 String SDA = "angle";
   
 void setup() {
@@ -71,12 +71,12 @@ void draw() {
  
  
   // Subdivide and display O
-  //R.copyFrom(O); 
-  //for(int i=0; i<level; i++) 
-  //  {
-  //  Q.copyFrom(R); 
-  //  Q.subdivideQuinticInto(R); // provide code
-  //  }
+  R.copyFrom(O); 
+  for(int i=0; i<level; i++) 
+    {
+    Q.copyFrom(R); 
+    Q.subdivideQuinticInto(R); // provide code
+    }
   
   R.showTube();
 
