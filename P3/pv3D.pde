@@ -186,5 +186,17 @@ void show(PNT P, float r) {pushMatrix(); translate(P.x,P.y,P.z); sphere(r); popM
 void showShadow(PNT P, float r) {pushMatrix(); translate(P.x,P.y,0); scale(1,1,0.01); sphere(r); popMatrix();}      // render shadow on the floot of sphere of radius r and center P
 
 //===== SUBDIVISION: THESE ARE INCORRECT: students can fix and use
-PNT B(PNT A, PNT B, PNT C, float s) {return B; };                          // returns a tucked B towards its neighbors
-PNT F(PNT A, PNT B, PNT C, PNT D, float s) {return P(A,B); };    // returns a bulged mid-edge point 
+PNT B(PNT A, PNT B, PNT C, float s) {
+  // tuck smoothing: tuck(s)
+  VCT BA = V(B,A); 
+  VCT BC = V(B,C);
+  
+  VCT MB = V(BA,BC); // vector point to mid of A and C
+  
+  B = P(B, s*2/3, MB);
+  return B; 
+};                          // returns a tucked B towards its neighbors
+
+PNT F(PNT A, PNT B, PNT C, PNT D, float s) {
+  return P(A,B); 
+};    // returns a bulged mid-edge point 

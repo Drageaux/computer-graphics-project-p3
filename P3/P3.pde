@@ -32,7 +32,7 @@ float
   t=0, 
   s=0;
 int
-  f=0, maxf=2*30, level=0, method=4;
+  f=0, maxf=2*30, level=1, method=4;
 String SDA = "angle";
   
 void setup() {
