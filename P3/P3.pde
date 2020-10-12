@@ -71,12 +71,12 @@ void draw() {
  
  
   // Subdivide and display O
-  R.copyFrom(O); 
-  for(int i=0; i<level; i++) 
-    {
-    Q.copyFrom(R); 
-    Q.subdivideQuinticInto(R); // provide code
-    }
+  //R.copyFrom(O); 
+  //for(int i=0; i<level; i++) 
+  //  {
+  //  Q.copyFrom(R); 
+  //  Q.subdivideQuinticInto(R); // provide code
+  //  }
   
   R.showTube();
 
