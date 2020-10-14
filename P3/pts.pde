@@ -28,17 +28,15 @@ class pts // class for manipulaitng and displaying pointclouds or polyloops in 3
   pts copyFrom(pts Q) {empty(); nv=Q.nv; for (int v=0; v<nv; v++) G[v]=P(Q.G[v]); return this;} // set THIS as a clone of Q
 
 
-  pts subdivideQuinticInto(pts Q) 
-    {
+  pts subdivideQuinticInto(pts Q) {
     float s=1.5;
     Q.empty();
-    for(int i=0; i<nv; i++)
-      {
-      Q.addPt(B(G[p(i)],G[i],G[n(i)],s));
-      Q.addPt(F(G[p(i)],G[i],G[n(i)],G[n(n(i))],s));    
-      }
-    return this;
+    for (int i = 0; i < nv; i++) {
+      Q.addPt(B(G[p(i)], G[i], G[n(i)], s));
+      Q.addPt(F(G[p(i)], G[i], G[n(i)], G[n(n(i))], s));    
     }
+    return this;
+  }
 
     
   pts setToL(pts P, float t, pts Q)                                     // set THIS as the lerp betwen P and Q for time t

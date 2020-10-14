@@ -187,18 +187,9 @@ void showShadow(PNT P, float r) {pushMatrix(); translate(P.x,P.y,0); scale(1,1,0
 
 //===== SUBDIVISION: THESE ARE INCORRECT: students can fix and use
 PNT B(PNT A, PNT B, PNT C, float s) {
-  // tuck smoothing: tuck(2s/3)
-  VCT BA = V(B,A); 
-  VCT BC = V(B,C);
-  
-  VCT MB = V(BA,BC); // vector point to mid of A and C
-  
-  B = P(B, s*2/3, MB);
-  return B; 
-};                          // returns a tucked B towards its neighbors
+  return P(s/8, A, (8-2*s)/8, B, s/8, C);
+};
 
 PNT F(PNT A, PNT B, PNT C, PNT D, float s) {
-  PNT result = L( L(A,9/8,B) ,s/2, L(D,9/8,C) );
-  
-  return result; 
-};    // returns a bulged mid-edge point 
+  return P((s-1)/16, A, (9-s)/16, B, (9-s)/16, C, (s-1)/16, D);
+};
