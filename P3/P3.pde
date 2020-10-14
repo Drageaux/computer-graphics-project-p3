@@ -34,12 +34,16 @@ float
 int
   f=0, maxf=2*30, level=3, method=4;
 String SDA = "angle";
+
+void settings() {
+  // Fixes "Profile GL4bc not available" error on my computer
+  System.setProperty("jogl.disable.openglcore", "true");
+  size(900, 900, P3D);
+}
   
 void setup() {
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
   textureMode(NORMAL);          
-  size(900, 900, P3D); // P3D means that we will do 3D graphics
-  //size(600, 600, P3D); // P3D means that we will do 3D graphics
   P1.declare(); P2.declare(); Q.declare(); R.declare(); // P is a polyloop in 3D: declared in pts
   P1.loadPts("data/pts1");  
   P2.loadPts("data/pts2"); // loads saved models from file (comment out if they do not exist yet)
