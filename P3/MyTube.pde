@@ -10,22 +10,51 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
   // Use this function to show the normal vectors (to demonstrate your twist-free propagation
   // Add the option of distributing the end-to-start angle difference evenly at each edge
   
+  VCT propagated = null;
+  
   for (int i = 1; i < n - 1; i++) {
     // For every 3-tuple (i-1, i, i+1), we find its normal vector
     VCT v1 = V(C[i-1], C[i]);
     VCT v2 = V(C[i], C[i+1]);
+    
+    // Normalize
+    v1 = V(1 / norm(v1), v1);
+    v2 = V(1 / norm(v2), v2);
+    
+    VCT x_axis = N(v1, v2);
+    x_axis = V(1 / norm(x_axis), x_axis);
+    
+    if (propagated == null) {
+      propagated = x_axis;
+    } else {
+      // The third axis in the first and second coordinate frames
+      VCT y_ax1 = N(v1, x_axis);
+      VCT y_ax2 = N(v2, x_axis);
+      y_ax1 = V(1 / norm(y_ax1), y_ax1);
+      y_ax2 = V(1 / norm(y_ax2), y_ax2);
+      
+      // Coordinates in the first frame
+      float x = dot(propagated, x_axis);
+      float y = dot(propagated, y_ax1);
+      
+      // Apply the coordinates in the second frame
+      propagated = V(x, x_axis, y, y_ax2);
+    }
+    
+    arrow(C[i], 80, propagated, 3); //<>//
+
     VCT cross = N(v1, v2);
     arrow(C[i], 0.3, cross, 5); //<>//
     
     // TODO: need to normalize cross then use radius
     VCT tangent = V(V(C[i-1],C[i+1])); // tangent to rotate the new vectors by
-    VCT cross = U(cross).mul(r);
-    System.out.println(n(unitCross));
+    VCT standardizedCross = U(cross).mul(r); // cross VCT with length of r
     
-    VCT cross1 = R(unitCross,PI*0.5-PI/4, tangent);
-    VCT cross2 = R(V(cross),PI-PI/4, tangent);
-    VCT cross3 = R(V(cross),PI*1.5-PI/4, tangent);
-    VCT cross4 = R(V(cross),PI*2-PI/4, tangent);
+    
+    VCT cross1 = R(standardizedCross,PI*0.5-PI/4, tangent);
+    VCT cross2 = R(standardizedCross,PI-PI/4, tangent);
+    VCT cross3 = R(standardizedCross,PI*1.5-PI/4, tangent);
+    VCT cross4 = R(standardizedCross,PI*2-PI/4, tangent);
     arrow(C[i], 0.3, cross1, 5);
     //arrow(C[i], 0.3, cross2, 5);
     //arrow(C[i], 0.3, cross3, 5);
