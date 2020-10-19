@@ -1,18 +1,28 @@
-void showQuadMeshOfTube(PNT[] C,int n, int nquads,float r,color col)
-  {
-  fill(blue); 
-  for (int j=0; j<n; j++) show(C[j],r);
-  fill(cyan); for (int j=0; j<n-1; j++) caplet(C[j],r/4,C[j+1],r/4); 
+void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
+  fill(cyan);
+  for (int j = 0; j < n-1; j++) {
+    //caplet(C[j], r/4, C[j+1], r/4);
+  }
   // STUDENTS SHOULD REPLACE THE LINE ABOVE WITH THEIR CODE FOR COMPUTING AND DISPLAYING THE QUADMESH OF THE TUBE OF RADIUS r, 
   // that has n rings of nquads quads with alternating grey and col colors
   // that is twist-free 
   // and is following the polyloop with the n first 3D vertices of C[]
   // Use this function to show the normal vectors (to demonstrate your twist-free propagation
   // Add the option of distributing the end-to-start angle difference evenly at each edge
-  }
   
-void showSimpleQuadMeshOfTube(PNT[] C,int n, int nquads,float r,color col)
-  {
+  print(C.length + " n:" + n + "\n");
+  
+  for (int i = 1; i < n - 1; i++) {
+    // For every list of three vertices (i-1, i, i+1), we find its normal vector
+    VCT v1 = V(C[i-1], C[i]);
+    VCT v2 = V(C[i], C[i+1]);
+    VCT cross = N(v1, v2);
+    arrow(C[i], 1, cross, 1);
+    //show(C[i], 100, cross); //<>//
+  }
+}
+  
+void showSimpleQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
   fill(brown); 
   for (int j=0; j<n; j++) show(C[j],r/2);
   fill(yellow); for (int j=0; j<n-1; j++) caplet(C[j],r/4,C[j+1],r/4); 
@@ -20,4 +30,4 @@ void showSimpleQuadMeshOfTube(PNT[] C,int n, int nquads,float r,color col)
   // Put here the final result: water-tight quad-mesh tube along the curve
   // Do not display vectors
   // Option: add normals to the quad vertices for smooth shading
-  }
+}
