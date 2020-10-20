@@ -42,9 +42,7 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
       
       // Apply the coordinates in the second frame
       vectors.add(V(x, x_axis, y, y_ax2));
-    }
-    
-    
+    } //<>//
   }
   
   // Duplicate the last vector to be placed at the end of the curve
@@ -60,6 +58,7 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
     total_angle = -total_angle;
   }
 
+
   // Propagate the error between the first and last vectors throughout the curve
   for (int i = 1; i < n - 1; i++) {
     float to_rotate = (vectors.size() - i) * 1.0 / vectors.size() * total_angle;
@@ -70,28 +69,28 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
   // Finally, visualize all vectors
   for (int i = 0; i < n; i++) {
     arrow(C[i], 80, vectors.get(i), 3);
-    
+  }
+  
+  // Building polygons at each point
+  for (int i = 1; i < n - 1; i++) {
+    arrow(C[i], 80, vectors.get(i), 3);
+  
     // normalize propagated then use radius
-    VCT tangent = V(V(C[i-1],C[i+1])); // tangent to rotate the new vectors by
-    VCT standardizedCross = U(last_vec).mul(r); // propagated VCT with length of r
+    VCT currTangent = V(V(C[i-1], C[i+1])); // tangent to rotate the new vectors by
+    VCT standardizedCross = U(vectors.get(i)).mul(r); // propagated VCT with length of r
 
     // complete the poly for at each point
     VCT[] poly = new VCT[nquads];
     for (int quad = 1; quad < nquads+1; quad++){
       fill(col);
       // rotate over tangent multiple times
-      VCT rotatedSample =  R(standardizedCross, 2*PI*(float)quad/(float)nquads - PI/(float)nquads, tangent); // 2PI*currentQuad/nquads, then offset by PI/nquads
+      VCT rotatedSample =  R(standardizedCross, 2*PI*(float)quad/(float)nquads - PI/(float)nquads, currTangent); // 2PI*currentQuad/nquads, then offset by PI/nquads
       arrow(C[i], 1, rotatedSample, 5);
       poly[quad-1] = rotatedSample;
       
     }
     quads[i] = poly;
-  }
-      
-
-
-   
-  
+  }  
   
   //for (int i = 1; i < n - 1; i++) {
   //  // connect this poly with previous poly
