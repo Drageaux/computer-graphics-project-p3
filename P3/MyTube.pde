@@ -10,7 +10,7 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
   // Use this function to show the normal vectors (to demonstrate your twist-free propagation
   // Add the option of distributing the end-to-start angle difference evenly at each edge
   
-  ArrayList<VCT> vectors = new ArrayList<VCT>();
+  VCT propagated = null;
   
   
   
@@ -28,8 +28,8 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
     VCT x_axis = N(v1, v2);
     x_axis = V(1 / norm(x_axis), x_axis);
     
-    if (vectors.size() == 0) {
-      vectors.add(V(-1, x_axis));
+    if (propagated == null) {
+      propagated = x_axis;
     } else {
       // The third axis in the first and second coordinate frames
       VCT y_ax1 = N(v1, x_axis);
@@ -37,10 +37,9 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
       y_ax1 = V(1 / norm(y_ax1), y_ax1);
       y_ax2 = V(1 / norm(y_ax2), y_ax2);
       
-      VCT last_vec = vectors.get(vectors.size() - 1);
       // Coordinates in the first frame
-      float x = dot(last_vec, x_axis);
-      float y = dot(last_vec, y_ax1);
+      float x = dot(propagated, x_axis);
+      float y = dot(propagated, y_ax1);
       
       // Apply the coordinates in the second frame
       propagated = V(x, x_axis, y, y_ax2);
@@ -96,18 +95,6 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
       }
       //System.out.println(C[i-1] + " " + quads[i-1][0]);
     }
-      vectors.add(V(x, x_axis, y, y_ax2));
-    } //<>//
-  }
-  // Duplicate the last vector to be placed at the end of the curve
-  VCT last_vec = vectors.get(vectors.size() - 1);
-  vectors.add(V(last_vec));
-  
-  // Smooth the vectors so that the first vector is the same as the last one
-  vectors.add(0, V(last_vec));
-  
-  for (int i = 0; i < n; i++) {
-    arrow(C[i], 80, vectors.get(i), 3);
   }
   System.out.println("Test");
 }
