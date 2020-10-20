@@ -69,14 +69,16 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
   // Finally, visualize all vectors
   // Building polygons at each point
   for (int i = 0; i < n; i++) {
-    arrow(C[i], 80, vectors.get(i), 3);
+    //arrow(C[i], 80, vectors.get(i), 3);
     
     // normalize propagated then use radius
     VCT currTangent = null;
-    if (i - 1 >= 0) {
+    if (i != 0 && i != n-1) {
       currTangent = V(V(C[i-1], C[i+1])); // tangent to rotate the new vectors by
-    } else {
-      currTangent = V(V(C[n], C[i+1])); 
+    } else if (i == 0) {
+      currTangent = V(V(C[n-1], C[1])); 
+    } else if (i == n-1) {
+      currTangent = V(V(C[i-1], C[0]));
     }
     
     VCT standardizedCross = U(vectors.get(i)).mul(r); // propagated VCT with length of r
@@ -103,17 +105,44 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
       PNT pD = null;
         
       //System.out.println(i + " " + currQuad);
-      if (currQuad + 1 < nquads){
-        pA = P(C[i], quads[i][currQuad]);
-        pB = i-1 >= 0 ? P(C[i-1], quads[i-1][currQuad]) : P(C[n-1], quads[n-1][currQuad]);
-        pC = i-1 >= 0 ? P(C[i-1], quads[i-1][currQuad+1]) : P(C[n-1], quads[n-1][currQuad+1]);
-        pD = P(C[i], quads[i][currQuad+1]); 
+      if (i - 1 >= 0) {
+        if (currQuad + 1 < nquads){
+          pA = P(C[i], quads[i][currQuad]);
+          pB = P(C[i-1], quads[i-1][currQuad]);
+          pC = P(C[i-1], quads[i-1][currQuad+1]);
+          pD = P(C[i], quads[i][currQuad+1]); 
+          //show(pA,pB,pC,pD);
+        } else {
+          pA = P(C[i], quads[i][currQuad]);
+          pB = P(C[i-1], quads[i-1][currQuad]);
+          pC = P(C[i-1], quads[i-1][0]);
+          pD = P(C[i], quads[i][0]); 
+        }
       } else {
-        pA = P(C[i], quads[i][currQuad]);
-        pB = i-1 >= 0 ? P(C[i-1], quads[i-1][currQuad]) : P(C[n-1], quads[n-1][currQuad]);
-        pC = i-1 >= 0 ? P(C[i-1], quads[i-1][0]) : P(C[n-1], quads[n-1][0]);
-        pD = P(C[i], quads[i][0]); 
-      }
+        //if (currQuad + 1 < nquads){
+        //  pA = P(C[i], quads[i][currQuad]);
+        //  pB = P(C[i-1], quads[i-1][currQuad]);
+        //  pC = P(C[i-1], quads[i-1][currQuad+1]);
+        //  pD = P(C[i], quads[i][currQuad+1]); 
+        //} else {
+        //  pA = P(C[i], quads[i][currQuad]);
+        //  pB = P(C[i-1], quads[i-1][currQuad]);
+        //  pC = P(C[n-1], quads[n-1][0]);
+        //  pD = P(C[i], quads[i][0]); 
+        //}
+      }        
+
+      //if (currQuad + 1 < nquads){
+      //  pA = P(C[i], quads[i][currQuad]);
+      //  pB = i-1 >= 0 ? P(C[i-1], quads[i-1][currQuad]) : P(C[n-1], quads[n-1][currQuad]);
+      //  pC = i-1 >= 0 ? P(C[i-1], quads[i-1][currQuad+1]) : P(C[n-1], quads[n-1][currQuad+1]);
+      //  pD = P(C[i], quads[i][currQuad+1]); 
+      //} else {
+      //  pA = P(C[i], quads[i][currQuad]);
+      //  pB = i-1 >= 0 ? P(C[i-1], quads[i-1][currQuad]) : P(C[n-1], quads[n-1][currQuad]);
+      //  pC = i-1 >= 0 ? P(C[i-1], quads[i-1][0]) : P(C[n-1], quads[n-1][0]);
+      //  pD = P(C[i], quads[i][0]); 
+      //}
       // alternating only if 4 quads and 6 quads
       if (nquads == 4 || nquads == 6) {
         if (i % 2 == 0) {
@@ -125,7 +154,6 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
       } else {
          
       }
-      show(pA,pB,pC,pD);
       //System.out.println(C[i-1] + " " + quads[i-1][0]);
     }
   }
