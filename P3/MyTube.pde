@@ -43,18 +43,21 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
       // Apply the coordinates in the second frame
       vectors.add(V(x, x_axis, y, y_ax2));
     }
-      // Duplicate the last vector to be placed at the end of the curve
-    VCT last_vec = vectors.get(vectors.size() - 1);
-    vectors.add(V(last_vec));
     
-    // Smooth the vectors so that the first vector is the same as the last one
-    vectors.add(0, V(last_vec));
     
-    for (int i = 0; i < n; i++) {
-      arrow(C[i], 80, vectors.get(i), 3);
-    }
-
-
+  }
+  
+  // Duplicate the last vector to be placed at the end of the curve
+  VCT last_vec = vectors.get(vectors.size() - 1);
+  vectors.add(V(last_vec));
+  
+  // Smooth the vectors so that the first vector is the same as the last one
+  vectors.add(0, V(last_vec));
+  
+  
+  for (int i = 0; i < n; i++) {
+    arrow(C[i], 80, vectors.get(i), 3);
+    
     // normalize propagated then use radius
     VCT tangent = V(V(C[i-1],C[i+1])); // tangent to rotate the new vectors by
     VCT standardizedCross = U(last_vec).mul(r); // propagated VCT with length of r
@@ -69,41 +72,43 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
       poly[quad-1] = rotatedSample;
       
     }
-    quads[i-1] = poly;
-    
+    quads[i] = poly;
   }
-  System.out.println(quads);
-  
-  
-  for (int i = 1; i < n - 1; i++) {
-    // connect this poly with previous poly
-    //if (i-1 >= 0 && C[i-1]) {
-    for (int currQuad = 0; currQuad < nquads; currQuad++){
       
-      if (currQuad+1 < nquads){
+
+
+   
+  
+  
+  //for (int i = 1; i < n - 1; i++) {
+  //  // connect this poly with previous poly
+  //  //if (i-1 >= 0 && C[i-1]) {
+  //  for (int currQuad = 0; currQuad < nquads; currQuad++){
+      
+  //    if (currQuad+1 < nquads){
         
-        System.out.println(i + " " + currQuad);
-        PNT pA = P(C[i], quads[i][currQuad]);
-        PNT pB = P(C[i-1], quads[i-1][currQuad]);
-        //PNT pC = P(C[i-1], quads[i-1][currQuad+1]);
-        //PNT pD = P(C[i], quads[i][currQuad+1]);
-        // alternating only if 4 quads and 6 quads
-        if (nquads == 4 || nquads == 6) {
-          if (i % 2 == 0) {
-              fill(white);
-          }
-          else {
-              fill(col);
-          }
-        } else {
+  //      System.out.println(i + " " + currQuad);
+  //      PNT pA = P(C[i], quads[i][currQuad]);
+  //      PNT pB = P(C[i-1], quads[i-1][currQuad]);
+  //      //PNT pC = P(C[i-1], quads[i-1][currQuad+1]);
+  //      //PNT pD = P(C[i], quads[i][currQuad+1]);
+  //      // alternating only if 4 quads and 6 quads
+  //      if (nquads == 4 || nquads == 6) {
+  //        if (i % 2 == 0) {
+  //            fill(white);
+  //        }
+  //        else {
+  //            fill(col);
+  //        }
+  //      } else {
            
-        }
-        //show(pA,pB,pC,pD);
-      }
-      //System.out.println(C[i-1] + " " + quads[i-1][0]);
-    }
-  }
-  System.out.println("Test");
+  //      }
+  //      //show(pA,pB,pC,pD);
+  //    }
+  //    //System.out.println(C[i-1] + " " + quads[i-1][0]);
+  //  }
+  //}
+  //System.out.println("Test");
 }
   
 void showSimpleQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
