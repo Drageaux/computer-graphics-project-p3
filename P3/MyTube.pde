@@ -111,7 +111,6 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
           pB = P(C[i-1], quads[i-1][currQuad]);
           pC = P(C[i-1], quads[i-1][currQuad+1]);
           pD = P(C[i], quads[i][currQuad+1]); 
-          //show(pA,pB,pC,pD);
         } else {
           pA = P(C[i], quads[i][currQuad]);
           pB = P(C[i-1], quads[i-1][currQuad]);
@@ -119,18 +118,19 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
           pD = P(C[i], quads[i][0]); 
         }
       } else {
-        //if (currQuad + 1 < nquads){
-        //  pA = P(C[i], quads[i][currQuad]);
-        //  pB = P(C[i-1], quads[i-1][currQuad]);
-        //  pC = P(C[i-1], quads[i-1][currQuad+1]);
-        //  pD = P(C[i], quads[i][currQuad+1]); 
-        //} else {
-        //  pA = P(C[i], quads[i][currQuad]);
-        //  pB = P(C[i-1], quads[i-1][currQuad]);
-        //  pC = P(C[n-1], quads[n-1][0]);
-        //  pD = P(C[i], quads[i][0]); 
-        //}
+        if (currQuad + 1 < nquads){
+          pA = P(C[i], quads[i][currQuad]);
+          pB = P(C[n-1], quads[n-1][currQuad]);
+          pC = P(C[n-1], quads[n-1][currQuad+1]);
+          pD = P(C[i], quads[i][currQuad+1]); 
+        } else {
+          pA = P(C[i], quads[i][currQuad]);
+          pB = P(C[n-1], quads[n-1][currQuad]);
+          pC = P(C[n-1], quads[n-1][0]);
+          pD = P(C[i], quads[i][0]); 
+        }
       }        
+      show(pA,pB,pC,pD);
 
       //if (currQuad + 1 < nquads){
       //  pA = P(C[i], quads[i][currQuad]);
