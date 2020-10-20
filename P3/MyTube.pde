@@ -48,12 +48,9 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
     arrow(C[i], 80, propagated, 3); //<>//
 
 
-
-    VCT cross = N(v1, v2);
-    arrow(C[i], 0.3, cross, 5); //<>//
-    // normalize cross then use radius
+    // normalize propagated then use radius
     VCT tangent = V(V(C[i-1],C[i+1])); // tangent to rotate the new vectors by
-    VCT standardizedCross = U(cross).mul(r); // cross VCT with length of r
+    VCT standardizedCross = U(propagated).mul(r); // propagated VCT with length of r
 
     // complete the poly for at each point
     VCT[] poly = new VCT[nquads];
