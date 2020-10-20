@@ -15,7 +15,7 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
   
   
   
-  VCT[][] quads = new VCT[C.length][nquads]; 
+  VCT[][] quads = new VCT[n][nquads]; 
   for (int i = 1; i < n - 1; i++) {
     // For every 3-tuple (i-1, i, i+1), we find its normal vector
     VCT v1 = V(C[i-1], C[i]);
@@ -55,31 +55,48 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
     // complete the poly for at each point
     VCT[] poly = new VCT[nquads];
     for (int quad = 1; quad < nquads+1; quad++){
+      fill(col);
       // rotate over tangent multiple times
       VCT rotatedSample =  R(standardizedCross, 2*PI*(float)quad/(float)nquads - PI/(float)nquads, tangent); // 2PI*currentQuad/nquads, then offset by PI/nquads
       arrow(C[i], 1, rotatedSample, 5);
       poly[quad-1] = rotatedSample;
       
     }
-    quads[i] = poly;
+    quads[i-1] = poly;
     
   }
-  
+  System.out.println(quads);
   
   
   for (int i = 1; i < n - 1; i++) {
     // connect this poly with previous poly
     //if (i-1 >= 0 && C[i-1]) {
-      if (C[i-1] != null && quads[i-1] != null && quads[i-1][0] != null){
-        PNT pA = P(C[i], quads[i][0]);
-        PNT pB = P(C[i-1], quads[i-1][0]);
-        PNT pC = P(C[i-1], quads[i-1][1]);
-        PNT pD = P(C[i], quads[i][1]);
-        show(pA,pB,pC,pD);
+    for (int currQuad = 0; currQuad < nquads; currQuad++){
+      
+      if (currQuad+1 < nquads){
+        
+        System.out.println(i + " " + currQuad);
+        PNT pA = P(C[i], quads[i][currQuad]);
+        PNT pB = P(C[i-1], quads[i-1][currQuad]);
+        //PNT pC = P(C[i-1], quads[i-1][currQuad+1]);
+        //PNT pD = P(C[i], quads[i][currQuad+1]);
+        // alternating only if 4 quads and 6 quads
+        if (nquads == 4 || nquads == 6) {
+          if (i % 2 == 0) {
+              fill(white);
+          }
+          else {
+              fill(col);
+          }
+        } else {
+           
+        }
+        //show(pA,pB,pC,pD);
       }
       //System.out.println(C[i-1] + " " + quads[i-1][0]);
-    //}
+    }
   }
+  System.out.println("Test");
 }
   
 void showSimpleQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
