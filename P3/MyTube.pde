@@ -69,6 +69,28 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
   // Finally, visualize all vectors
   for (int i = 0; i < n; i++) {
     arrow(C[i], 80, vectors.get(i), 3);
+    
+    // normalize propagated then use radius
+    VCT currTangent = null;
+    if (i - 1 >= 0) {
+      currTangent = V(V(C[i-1], C[i+1])); // tangent to rotate the new vectors by
+    } else {
+      currTangent = V(V(C[n], C[i+1])); 
+    }
+    
+    VCT standardizedCross = U(vectors.get(i)).mul(r); // propagated VCT with length of r
+
+    // complete the poly for at each point
+    VCT[] poly = new VCT[nquads];
+    for (int quad = 1; quad < nquads+1; quad++){
+      // rotate over tangent multiple times
+      VCT rotatedSample =  R(standardizedCross, 2*PI*(float)quad/(float)nquads - PI/(float)nquads, currTangent); // 2PI*currentQuad/nquads, then offset by PI/nquads
+      //arrow(C[i], 1, rotatedSample, 5);
+      poly[quad-1] = rotatedSample;
+      
+    }
+    quads[i] = poly;
+    System.out.println(quads[i] == null);
   }
   
   // Building polygons at each point
@@ -82,44 +104,43 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
     // complete the poly for at each point
     VCT[] poly = new VCT[nquads];
     for (int quad = 1; quad < nquads+1; quad++){
-      fill(col);
       // rotate over tangent multiple times
       VCT rotatedSample =  R(standardizedCross, 2*PI*(float)quad/(float)nquads - PI/(float)nquads, currTangent); // 2PI*currentQuad/nquads, then offset by PI/nquads
-      arrow(C[i], 1, rotatedSample, 5);
+      //arrow(C[i], 1, rotatedSample, 5);
       poly[quad-1] = rotatedSample;
       
     }
     quads[i] = poly;
   }  
   
-  //for (int i = 1; i < n - 1; i++) {
-  //  // connect this poly with previous poly
-  //  //if (i-1 >= 0 && C[i-1]) {
-  //  for (int currQuad = 0; currQuad < nquads; currQuad++){
+  for (int i = 1; i < n - 1; i++) {
+    // connect this poly with previous poly
+    //if (i-1 >= 0 && C[i-1]) {
+    for (int currQuad = 0; currQuad < nquads; currQuad++){
       
-  //    if (currQuad+1 < nquads){
+      if (currQuad+1 < nquads){
         
-  //      System.out.println(i + " " + currQuad);
-  //      PNT pA = P(C[i], quads[i][currQuad]);
-  //      PNT pB = P(C[i-1], quads[i-1][currQuad]);
-  //      //PNT pC = P(C[i-1], quads[i-1][currQuad+1]);
-  //      //PNT pD = P(C[i], quads[i][currQuad+1]);
-  //      // alternating only if 4 quads and 6 quads
-  //      if (nquads == 4 || nquads == 6) {
-  //        if (i % 2 == 0) {
-  //            fill(white);
-  //        }
-  //        else {
-  //            fill(col);
-  //        }
-  //      } else {
+        //System.out.println(i + " " + currQuad);
+        PNT pA = P(C[i], quads[i][currQuad]);
+        PNT pB = P(C[i-1], quads[i-1][currQuad]);
+        //PNT pC = P(C[i-1], quads[i-1][currQuad+1]);
+        //PNT pD = P(C[i], quads[i][currQuad+1]);
+        // alternating only if 4 quads and 6 quads
+        if (nquads == 4 || nquads == 6) {
+          if (i % 2 == 0) {
+              fill(white);
+          }
+          else {
+              fill(col);
+          }
+        } else {
            
-  //      }
-  //      //show(pA,pB,pC,pD);
-  //    }
-  //    //System.out.println(C[i-1] + " " + quads[i-1][0]);
-  //  }
-  //}
+        }
+        //show(pA,pB,pC,pD);
+      }
+      //System.out.println(C[i-1] + " " + quads[i-1][0]);
+    }
+  }
   //System.out.println("Test");
 }
   
