@@ -12,6 +12,10 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
   
   VCT propagated = null;
   
+  
+  
+  
+  VCT[][] quads = new VCT[C.length][nquads]; 
   for (int i = 1; i < n - 1; i++) {
     // For every 3-tuple (i-1, i, i+1), we find its normal vector
     VCT v1 = V(C[i-1], C[i]);
@@ -43,22 +47,41 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
     
     arrow(C[i], 80, propagated, 3); //<>//
 
+
+
     VCT cross = N(v1, v2);
     arrow(C[i], 0.3, cross, 5); //<>//
-    
-    // TODO: need to normalize cross then use radius
+    // normalize cross then use radius
     VCT tangent = V(V(C[i-1],C[i+1])); // tangent to rotate the new vectors by
     VCT standardizedCross = U(cross).mul(r); // cross VCT with length of r
+
+    // complete the poly for at each point
+    VCT[] poly = new VCT[nquads];
+    for (int quad = 1; quad < nquads+1; quad++){
+      // rotate over tangent multiple times
+      VCT rotatedSample =  R(standardizedCross, 2*PI*(float)quad/(float)nquads - PI/(float)nquads, tangent); // 2PI*currentQuad/nquads, then offset by PI/nquads
+      arrow(C[i], 1, rotatedSample, 5);
+      poly[quad-1] = rotatedSample;
+      
+    }
+    quads[i] = poly;
     
-    
-    VCT cross1 = R(standardizedCross,PI*0.5-PI/4, tangent);
-    VCT cross2 = R(standardizedCross,PI-PI/4, tangent);
-    VCT cross3 = R(standardizedCross,PI*1.5-PI/4, tangent);
-    VCT cross4 = R(standardizedCross,PI*2-PI/4, tangent);
-    arrow(C[i], 0.3, cross1, 5);
-    //arrow(C[i], 0.3, cross2, 5);
-    //arrow(C[i], 0.3, cross3, 5);
-    //arrow(C[i], 0.3, cross4, 5);
+  }
+  
+  
+  
+  for (int i = 1; i < n - 1; i++) {
+    // connect this poly with previous poly
+    //if (i-1 >= 0 && C[i-1]) {
+      if (C[i-1] != null && quads[i-1] != null && quads[i-1][0] != null){
+        PNT pA = P(C[i], quads[i][0]);
+        PNT pB = P(C[i-1], quads[i-1][0]);
+        PNT pC = P(C[i-1], quads[i-1][1]);
+        PNT pD = P(C[i], quads[i][1]);
+        show(pA,pB,pC,pD);
+      }
+      //System.out.println(C[i-1] + " " + quads[i-1][0]);
+    //}
   }
 }
   
