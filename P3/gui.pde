@@ -137,6 +137,6 @@ void displayFooter()  // Displays help text at the bottom
     scribeFooter(menu,0); 
     }
 
-String title ="6491 P4 2020: Space Curves subdivision, twist-free display, correspondence", name ="Jarek Rossignac",
+String title ="6491 P4 2020: Space Curves subdivision, twist-free display, correspondence", name ="Chen Liu, Thong Nguyen",
        menu="?:help, !:picture, ~:(start/stop)capture, space:rotate, `/wheel:closer, t/T:target, .:track, a:anim, #:quit",
        guide="xz/XZ:move/ALL, e:exchange, q/p:copy, l/L:load, w/W:write, C/K:show caplet/cone"; // user's guide
