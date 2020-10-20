@@ -130,30 +130,18 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
           pD = P(C[i], quads[i][0]); 
         }
       }        
-      show(pA,pB,pC,pD);
-
-      //if (currQuad + 1 < nquads){
-      //  pA = P(C[i], quads[i][currQuad]);
-      //  pB = i-1 >= 0 ? P(C[i-1], quads[i-1][currQuad]) : P(C[n-1], quads[n-1][currQuad]);
-      //  pC = i-1 >= 0 ? P(C[i-1], quads[i-1][currQuad+1]) : P(C[n-1], quads[n-1][currQuad+1]);
-      //  pD = P(C[i], quads[i][currQuad+1]); 
-      //} else {
-      //  pA = P(C[i], quads[i][currQuad]);
-      //  pB = i-1 >= 0 ? P(C[i-1], quads[i-1][currQuad]) : P(C[n-1], quads[n-1][currQuad]);
-      //  pC = i-1 >= 0 ? P(C[i-1], quads[i-1][0]) : P(C[n-1], quads[n-1][0]);
-      //  pD = P(C[i], quads[i][0]); 
-      //}
+      
       // alternating only if 4 quads and 6 quads
-      if (nquads == 4 || nquads == 6) {
-        if (i % 2 == 0) {
-            fill(white);
-        }
-        else {
-            fill(col);
+      if (nquads == 5) {
+        if (i % 2 == 0){
+          fill(white);
+        } else {
+          fill(col);
         }
       } else {
-         
+        
       }
+      show(pA,pB,pC,pD);
       //System.out.println(C[i-1] + " " + quads[i-1][0]);
     }
   }
