@@ -49,6 +49,20 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
   // Smooth the vectors so that the first vector is the same as the last one
   vectors.add(0, V(last_vec));
   
+  VCT tangent = V(C[0], C[1]);
+  float total_angle = angle(vectors.get(0), vectors.get(1));
+  if (cw(tangent, vectors.get(0), vectors.get(1))) {
+    total_angle = -total_angle;
+  }
+
+  // Propagate the error between the first and last vectors throughout the curve
+  for (int i = 1; i < n - 1; i++) {
+    float to_rotate = (vectors.size() - i) * 1.0 / vectors.size() * total_angle;
+    tangent = V(C[i], C[i+1]);
+    vectors.set(i, R(vectors.get(i), to_rotate, tangent));
+  }
+  
+  // Finally, visualize all vectors
   for (int i = 0; i < n; i++) {
     arrow(C[i], 80, vectors.get(i), 3);
   }
