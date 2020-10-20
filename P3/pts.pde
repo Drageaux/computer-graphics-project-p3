@@ -186,7 +186,7 @@ class pts // class for manipulaitng and displaying pointclouds or polyloops in 3
         {
         if(showCaplets) {fill(yellow); for (int j=0; j<nv; j++) caplet(G[j],tubeRadius/4,G[n(j)],tubeRadius/4); }
         if(showBalls) {fill(brown); for (int j=0; j<nv; j++) show(G[j],tubeRadius/4);}
-        if(showTubeAsQuadMesh) showQuadMeshOfTube(G,nv,5,tubeRadius,green); // center points G[], point-count, quad-count in ring, ring-radius, color of checkerboard
+        if(showTubeAsQuadMesh) showQuadMeshOfTube(G,nv,6,tubeRadius,green); // center points G[], point-count, quad-count in ring, ring-radius, color of checkerboard
         }
       if(animating) 
         {

@@ -69,7 +69,7 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
   // Finally, visualize all vectors
   // Building polygons at each point
   for (int i = 0; i < n; i++) {
-    //arrow(C[i], 80, vectors.get(i), 3);
+    arrow(C[i], 80, vectors.get(i), 3);
     
     // normalize propagated then use radius
     VCT currTangent = null;
@@ -139,13 +139,17 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
           fill(col);
         }
       } else {
-        
+        if (i % 2 == 0) {
+          if (currQuad % 2 == 0) fill(white);
+          else fill(col);
+        } else {
+          if (currQuad % 2 == 0) fill(col);
+          else fill(white);
+        }
       }
       show(pA,pB,pC,pD);
-      //System.out.println(C[i-1] + " " + quads[i-1][0]);
     }
   }
-  //System.out.println("Test");
 }
   
 void showSimpleQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
