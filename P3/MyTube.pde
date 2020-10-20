@@ -25,7 +25,7 @@ void showQuadMeshOfTube(PNT[] C, int n, int nquads, float r, color col) {
     x_axis = V(1 / norm(x_axis), x_axis);
     
     if (propagated == null) {
-      propagated = x_axis;
+      propagated = V(-1, x_axis);
     } else {
       // The third axis in the first and second coordinate frames
       VCT y_ax1 = N(v1, x_axis);
