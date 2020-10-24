@@ -71,7 +71,9 @@ void draw() {
     Q.subdivideQuinticInto(R); // provide code
     }
  
-  R.showMyProject(); // Provided code (In TAB pts) for project 3
+  //R.showMyProject(); // Provided code (In TAB pts) for project 3
+  pts C1 = new pts();
+  C1.copyFrom(R);
  
  
   // Subdivide and display O
@@ -81,8 +83,18 @@ void draw() {
     Q.copyFrom(R); 
     Q.subdivideQuinticInto(R); // provide code
     }
+  pts C2 = new pts();
+  C2.copyFrom(R);
   
-  R.showTube();
+  //R.showTube();
+  
+  // new curves for Phase C
+  C1.showTube();
+  C2.showTube();
+  
+  constructLadder(C1.G, C2.G);
+  
+  
 
   
   if(targetTracking) F=P(R.G[f]); // sets camera focus on current point G[f] on subdivided curve R
@@ -99,3 +111,24 @@ void draw() {
   if(filming && (animating || change)) saveFrame("FRAMES/F"+nf(frameCounter++,4)+".tif");  // save next frame to make a movie
   change=false; // to avoid capturing frames when nothing happens (change is set uppn action)
   }
+  
+void constructLadder(PNT[] p1, PNT[] p2) {
+  for (PNT v1 : p1) {
+    double closestDist = -1;
+    PNT closestPoint = null;
+    for (PNT v2 : p2) {
+      if (v1 != null && v2 != null){
+        if (closestDist < 0) {
+          closestDist = V(v1, v2).norm();
+          closestPoint = v2;
+        } else if (V(v1, v2).norm() < closestDist) {
+          closestDist = V(v1, v2).norm();
+          closestPoint = v2;
+          //System.out.println(closestDist);
+        }
+      }
+    }
+    fill(cyan);
+    if (closestPoint != null) arrow(v1, 1, V(v1, closestPoint), 3);
+  }
+}
