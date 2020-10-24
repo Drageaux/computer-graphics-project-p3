@@ -90,9 +90,10 @@ void draw() {
   
   // new curves for Phase C
   C1.showTube();
+  fill(blue);
   C2.showTube();
   
-  constructLadder(C1.G, C2.G);
+  constructLadder(C1, C2);
   
   
 
@@ -112,23 +113,43 @@ void draw() {
   change=false; // to avoid capturing frames when nothing happens (change is set uppn action)
   }
   
-void constructLadder(PNT[] p1, PNT[] p2) {
-  for (PNT v1 : p1) {
+void constructLadder(pts C1, pts C2) {
+  // HashMap<closestPointOnCurve2, point)
+  HashMap closestProjection = new HashMap<Integer, Integer>();
+  
+  for (int i = 0; i < C1.nv; i++) {
     double closestDist = -1;
-    PNT closestPoint = null;
-    for (PNT v2 : p2) {
-      if (v1 != null && v2 != null){
-        if (closestDist < 0) {
-          closestDist = V(v1, v2).norm();
-          closestPoint = v2;
-        } else if (V(v1, v2).norm() < closestDist) {
-          closestDist = V(v1, v2).norm();
-          closestPoint = v2;
-          //System.out.println(closestDist);
+    Integer closestPoint = null;
+    for (int j = 0; j < C2.nv; j++) {
+      if (C1.G[i] != null && C2.G[j] != null){
+        double dist = V(C1.G[i], C2.G[j]).norm();
+        // check if already in the normal map
+        if (closestProjection.get(j) == null) {
+          if (closestDist < 0) {
+            closestDist = dist;
+            closestPoint = j;
+          } else if (dist < closestDist) {
+            closestDist = dist;
+            closestPoint = j;
+            //System.out.println(closestDist);
+          }
         }
       }
     }
     fill(cyan);
-    if (closestPoint != null) arrow(v1, 1, V(v1, closestPoint), 3);
+    if (closestPoint != null && closestProjection.get(closestPoint) == null) {
+      closestProjection.put(closestPoint, i);
+    }
+  }
+  
+  System.out.println(C1.nv + " " + C2.nv);
+  
+  for (Integer j = 0; j < C2.nv; j++) {
+    //System.out.println(closestProjection.get(j));
+    //if (closestProjection.get(j) != null) {
+      int i = (int)closestProjection.get(j);
+      arrow(C1.G[i], 1, V(C1.G[i], C2.G[j]), 3);
+    //}
+    
   }
 }
