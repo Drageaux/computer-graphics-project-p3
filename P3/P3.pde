@@ -118,13 +118,13 @@ void constructLadder(pts C1, pts C2) {
   HashMap closestProjection = new HashMap<Integer, Integer>();
   
   for (int i = 0; i < C1.nv; i++) {
-    double closestDist = -1;
+    float closestDist = -1;
     Integer closestPoint = null;
     for (int j = 0; j < C2.nv; j++) {
       if (C1.G[i] != null && C2.G[j] != null){
-        double dist = V(C1.G[i], C2.G[j]).norm();
+        float dist = V(C1.G[i], C2.G[j]).norm();
         // check if already in the normal map
-        if (closestProjection.get(j) == null) {
+        //if (closestProjection.get(j) == null) {
           if (closestDist < 0) {
             closestDist = dist;
             closestPoint = j;
@@ -133,23 +133,26 @@ void constructLadder(pts C1, pts C2) {
             closestPoint = j;
             //System.out.println(closestDist);
           }
-        }
+        //}
       }
     }
     fill(cyan);
-    if (closestPoint != null && closestProjection.get(closestPoint) == null) {
-      closestProjection.put(closestPoint, i);
+    //if (closestPoint != null && closestProjection.get(closestPoint) == null) {
+      //closestProjection.put(closestPoint, i);
+    if (closestPoint != null) {
+      arrow(C1.G[i], 1, V(C1.G[i], C2.G[closestPoint]), 3);
+      show(C1.G[i], closestDist);
     }
   }
   
   System.out.println(C1.nv + " " + C2.nv);
   
-  for (Integer j = 0; j < C2.nv; j++) {
-    //System.out.println(closestProjection.get(j));
-    //if (closestProjection.get(j) != null) {
-      int i = (int)closestProjection.get(j);
-      arrow(C1.G[i], 1, V(C1.G[i], C2.G[j]), 3);
-    //}
+  //for (Integer j = 0; j < C2.nv; j++) {
+  //  //System.out.println(closestProjection.get(j));
+  //  //if (closestProjection.get(j) != null) {
+  //    int i = (int)closestProjection.get(j);
+  //    arrow(C1.G[i], 1, V(C1.G[i], C2.G[j]), 3);
+  //  //}
     
-  }
+  //}
 }
