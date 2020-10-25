@@ -142,8 +142,18 @@ void constructLadder(pts C1, pts C2) {
     if (closestPoint != null) {
       arrow(C1.G[i], 1, V(C1.G[i], C2.G[closestPoint]), 3);
       show(C1.G[i], closestDist);
+      
+      closestProjection.put(i, closestPoint);
     }
+    
   }
+  
+  // caplets example
+  //for (int j = 0; j < closestProjection.size()-1; j++) {
+  //  VCT vect1 = V(C1.G[j], C2.G[(int)closestProjection.get(j)]);
+  //  VCT vect2 = V(C1.G[j+1], C2.G[(int)closestProjection.get(j+1)]);
+  //  caplet(C1.G[j], vect1.norm(), C1.G[j+1], vect2.norm());
+  //}
   
   System.out.println(C1.nv + " " + C2.nv);
   
